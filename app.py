@@ -31,6 +31,7 @@ if not os.path.exists('./experiments/pretrained_models/SAFMN_L_Real_LSDIR_x4-v2.
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# device = torch.device('cpu' if torch.cuda.is_available() else 'cpu')
 
 def set_safmn(upscale):
 	model = SAFMN(dim=128, n_blocks=16, ffn_scale=2.0, upscaling_factor=upscale)
@@ -47,7 +48,7 @@ def set_safmn(upscale):
 
 
 def img2patch(lq, scale=4, crop_size=512):
-    b, c, hl, wl = lq.size()    
+    b, c, hl, wl = lq.size()
     h, w = hl*scale, wl*scale
     sr_size = (b, c, h, w)
     assert b == 1
@@ -109,8 +110,8 @@ os.makedirs('./results', exist_ok=True)
 
 def inference(image, upscale, large_input_flag, color_fix):
 	upscale = int(upscale) # convert type to int
-	if upscale > 4: 
-		upscale = 4 
+	if upscale > 4:
+		upscale = 4
 	if 0 < upscale < 3:
 		upscale = 2
 
@@ -203,7 +204,7 @@ demo = gr.Interface(
     ],
     title=title,
     description=description,
-    article=article,       
+    article=article,
 )
 
 demo.queue(concurrency_count=2)
